@@ -11,10 +11,7 @@ import {
 
 function App() {
   return (
-    <Container
-      className="h-[100vh] flex place-content-center border"
-      maxWidth="sm"
-    >
+    <Container className="h-[100vh] flex place-content-center" maxWidth="sm">
       <Card>
         <CardContent>
           <Stack gap={3}>
