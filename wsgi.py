@@ -1,11 +1,10 @@
 from flask import Flask, request
-from database.user_database import UserDatabase
-from database.rooms_database import RoomsDatabase
+from database import Database
 import json
+import hashlib
 
 app = Flask(__name__)
-user_database = UserDatabase()
-room_database = RoomsDatabase()
+database = Database() 
 
 @app.route('/')
 def hello():
@@ -17,7 +16,7 @@ def register():
     password = request.args.get('password')
     user_type = request.args.get('user_type')
 
-    if not user_database.create_account(username, password, user_type):
+    if not database.create_account(username, password, user_type):
         return json.dumps({'status': 'failure'})
 
     return json.dumps({'status': 'success'})
@@ -27,40 +26,64 @@ def login():
     username = request.args.get('username')
     password = request.args.get('password')
 
-    if user_database.check_account(username, password):
-        account_details = user_database.get_details(username)
+    if database.check_account(username, password):
+        account_details = database.get_details(username)
         return json.dumps({'status': 'success', 'details': account_details})
     else:
         return json.dumps({'status': 'failure'})
 
 @app.route('/create_room')
 def create_room():
-    room_name = request.args.get('room_name')
-    teacher = request.args.get('teacher')
+    user_id = request.args.get('user_id')
 
-    if not room_database.create_room(room_name, teacher):
+    if not database.create_room(user_id):
+        return json.dumps({'status': 'failure'})
+
+    return json.dumps({'status': 'success'})
+
+@app.route('/remove_room')
+def remove_room():
+    room_id = request.args.get('room_id')
+
+    if not database.remove_room(room_id):
         return json.dumps({'status': 'failure'})
 
     return json.dumps({'status': 'success'})
 
 @app.route('/add_student')
 def add_student():
-    room_name = request.args.get('room_name')
-    student = request.args.get('student')
+    room_id = request.args.get('room_id')
+    user_id = request.args.get('user_id')
 
-    if not room_database.add_student(room_name, student):
+    if not database.add_student(room_id, user_id):
         return json.dumps({'status': 'failure'})
 
     return json.dumps({'status': 'success'})
 
 @app.route('/remove_student')
 def remove_student():
-    room_name = request.args.get('room_name')
-    student = request.args.get('student')
+    room_id = request.args.get('room_id')
+    user_id = request.args.get('student')
 
-    if not room_database.remove_student(room_name, student):
+    if not database.remove_student(room_id, user_id):
         return json.dumps({'status': 'failure'})
 
+    return json.dumps({'status': 'success'})
+
+@app.route('/create_feed')
+def create_feed():
+    room_id = request.args.get('room_id')
+    user_id = request.args.get('user_id')
+    mix = room_id + user_id
+    hash_object = hashlib.sha256()
+    hash_object.update(mix.encode())
+    feed_id = hash_object.hexdigest()
+    return json.dumps({'feed_id': feed_id})
+
+@app.route('/add_visual_feed')
+def add_visual_feed():
+    feed_id = request.args.get('feed_id')
+    image_base64 = request.args.get('image_base64')
     return json.dumps({'status': 'success'})
 
 

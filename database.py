@@ -33,6 +33,14 @@ class Database:
         self.room_db.insert({'id': room_id, 'master': master, 'students': []})
         return True
     
+    def remove_room(self, room_id):
+        Room = Query()
+        isRoomPresent = len(self.room_db.search(Room.id == room_id)) > 0
+        if not isRoomPresent:
+            return False
+        self.room_db.remove(Room.id == room_id)
+        return True
+    
     def add_student(self, room_id, user_id):
         Room = Query()
         isRoomPresent = len(self.room_db.search(Room.id == room_id)) > 0
@@ -54,5 +62,4 @@ class Database:
         students.remove(user_id)
         self.room_db.update({'students': students}, Room.id == room_id)
         return True
-    
     
