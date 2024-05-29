@@ -6,10 +6,6 @@ import hashlib
 app = Flask(__name__)
 database = Database() 
 
-@app.route('/')
-def hello():
-    return 'Hello, World!'
-
 @app.route('/register', methods=['GET'])
 def register():
     username = request.args.get('username')
