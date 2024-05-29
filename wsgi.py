@@ -82,6 +82,12 @@ def add_visual_feed():
     image_base64 = request.args.get('image_base64')
     return json.dumps({'status': 'success'})
 
+# temp feed endpoint
+@app.route('/get_feed'):
+def get_feed():
+    base64_image = request.args.get('image_base64')
+    print(base64_image)
+    return json.dumps({'status': 'success'})
 
 if __name__ == '__main__':
     app.run()
