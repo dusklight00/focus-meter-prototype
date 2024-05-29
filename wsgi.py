@@ -1,7 +1,8 @@
 from flask import Flask, request
-from tinydb import TinyDB, Query
+from database import Database
 
 app = Flask(__name__)
+database = Database()
 
 @app.route('/')
 def hello():
@@ -12,7 +13,7 @@ def register():
     username = request.args.get('username')
     password = request.args.get('password')
 
-    print(username, password)
+    database.create_account(username, password)
 
     return 'Register page'
 
