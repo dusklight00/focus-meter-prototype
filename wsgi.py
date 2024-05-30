@@ -2,6 +2,8 @@ from flask import Flask, request
 from database import Database
 import json
 import hashlib
+import cv2
+from util import convert_base64_to_cv2
 
 app = Flask(__name__)
 database = Database() 
@@ -83,10 +85,11 @@ def add_visual_feed():
     return json.dumps({'status': 'success'})
 
 # temp feed endpoint
-@app.route('/get_feed'):
+@app.route('/get_feed')
 def get_feed():
     base64_image = request.args.get('image_base64')
-    print(base64_image)
+    image = convert_base64_to_cv2(base64_image)
+    cv2.imshow("image", image)
     return json.dumps({'status': 'success'})
 
 if __name__ == '__main__':
