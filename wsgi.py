@@ -88,8 +88,10 @@ def add_visual_feed():
 @app.route('/get_feed')
 def get_feed():
     base64_image = request.args.get('image_base64')
-    image = convert_base64_to_cv2(base64_image)
-    cv2.imshow("image", image)
+    print(base64_image)
+    image = convert_base64_to_cv2(base64_image) 
+    # image = convert_base64_to_cv2(base64_image)
+    cv2.imwrite('test.jpg', image)
     return json.dumps({'status': 'success'})
 
 if __name__ == '__main__':

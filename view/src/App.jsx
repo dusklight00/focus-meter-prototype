@@ -3,6 +3,7 @@ import Login from "./pages/Login.jsx";
 import Register from "./pages/Register.jsx";
 import Room from "./pages/Room.jsx";
 import instance from "../instance.js";
+import CreateRoom from "./pages/CreateRoom.jsx";
 
 import { useRef, useEffect } from "react";
 
@@ -29,15 +30,18 @@ function App() {
 
   return (
     <>
-      <Webcam ref={webRef} />
+      {/* <Webcam ref={webRef} /> */}
+      {/* <Webcam ref={webRef} />
       <button
         onClick={() => {
           showImage();
         }}
       >
         Show image in console
-      </button>
+      </button> */}
       {/* <Room /> */}
+      {/* <Register /> */}
+      <CreateRoom />
     </>
   );
 }
